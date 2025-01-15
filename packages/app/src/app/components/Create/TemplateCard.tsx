@@ -1,9 +1,12 @@
 import React from 'react';
 import { formatNumber, Icon, Stack, Text } from '@codesandbox/components';
+import Tooltip from '@codesandbox/common/lib/components/Tooltip';
+
 import { VisuallyHidden } from 'reakit/VisuallyHidden';
 import { TemplateButton } from './elements';
 import { SandboxToFork } from './utils/types';
 import { TemplateIcon } from './TemplateIcon';
+import { CODEIUM_ID } from './utils/constants';
 
 interface TemplateCardProps {
   disabled?: boolean;
@@ -23,12 +26,12 @@ export const TemplateCard = ({
   forks,
 }: TemplateCardProps) => {
   const sandboxTitle = template.title || template.alias;
-  const teamName = template.author;
+  const teamName = template.id === CODEIUM_ID ? 'Codeium' : template.author;
 
   return (
     <TemplateButton
       title={sandboxTitle}
-      css={{ padding }}
+      style={{ padding }}
       type="button"
       onClick={evt => {
         if (disabled) {
@@ -67,6 +70,25 @@ export const TemplateCard = ({
           css={{ justifyContent: 'space-between', alignItems: 'flex-start' }}
         >
           <TemplateIcon template={template} />
+          <Stack gap={1} direction="horizontal">
+            {(template.type === 'sandbox' || template.browserSandboxId) && (
+              <Tooltip content="Runs on browser">
+                <Stack css={{ width: 16, height: 16 }}>
+                  <Icon
+                    css={{ margin: 'auto' }}
+                    color="#999"
+                    size={14}
+                    name="boxDevbox"
+                  />
+                </Stack>
+              </Tooltip>
+            )}
+            {template.type === 'devbox' && (
+              <Tooltip content="Runs on server">
+                <Icon color="#999" size={16} name="server" />
+              </Tooltip>
+            )}
+          </Stack>
         </Stack>
         <Stack direction="vertical" gap={1}>
           <Text

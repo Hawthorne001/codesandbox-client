@@ -12,7 +12,6 @@ export const sandboxFragmentDashboard = gql`
     removedAt
     privacy
     isFrozen
-    isSse
     screenshotUrl
     screenshotOutdated
     viewCount
@@ -42,6 +41,9 @@ export const sandboxFragmentDashboard = gql`
     }
 
     authorId
+    author {
+      username
+    }
     teamId
 
     permissions {
@@ -120,11 +122,9 @@ export const teamFragmentDashboard = gql`
   fragment teamFragmentDashboard on Team {
     id
     name
-    type
     description
     creatorId
     avatarUrl
-    legacy
     frozen
     insertedAt
     settings {
@@ -295,6 +295,9 @@ export const branchFragment = gql`
     contribution
     lastAccessedAt
     upstream
+    owner {
+      username
+    }
     project {
       repository {
         ... on GitHubRepository {
@@ -317,6 +320,9 @@ export const branchWithPRFragment = gql`
     name
     contribution
     lastAccessedAt
+    owner {
+      username
+    }
     upstream
     project {
       repository {
